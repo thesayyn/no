@@ -1,0 +1,8 @@
+{
+    "name": "example",
+    "bin": "src/main.js",
+    "type": "module",
+    "dependencies": {
+        "chalk": "^5.0.1"
+    }
+}
