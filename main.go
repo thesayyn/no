@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/thesayyn/no/pkg/cmd"
+	"github.com/thesayyn/no/cmd"
 )
 
 func main() {

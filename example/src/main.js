@@ -18,8 +18,7 @@ console.log(chalk.greenBright.bold(`endianness: ${os.endianness()}`));
 console.log(chalk.greenBright.bold(`free memory: ${(os.freemem() / 1024 / 1024 / 1024).toFixed(2)}GB`));
 console.log(chalk.greenBright.bold(`priority: ${os.getPriority()}`));
 console.log(chalk.greenBright.bold(`uptime: ${hhmmss(os.uptime())}`));
-
-
+console.log(chalk.greenBright.bold(`cwd: ${process.cwd()}`));
 
 function hhmmss(seconds) {
     const d = new Date();

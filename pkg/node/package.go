@@ -2,8 +2,10 @@ package node
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type PackageJSON struct {
@@ -11,8 +13,7 @@ type PackageJSON struct {
 	Description string `json:"description"`
 }
 
-func GetPackageJson(root string) (*PackageJSON, error) {
-	p := filepath.Join(root, "package.json")
+func ParsePackageJson(p string) (*PackageJSON, error) {
 	bytes, err := os.ReadFile(p)
 
 	if err != nil {
@@ -21,6 +22,27 @@ func GetPackageJson(root string) (*PackageJSON, error) {
 
 	var pkg PackageJSON
 	err = json.Unmarshal(bytes, &pkg)
-
 	return &pkg, err
+}
+
+func FindPackageLock(root string) (*string, error) {
+	errorsSeen := []string{}
+
+	candidates := []string{
+		"package-lock.json",
+		"yarn.lock",
+		"pnpm-lock.yaml",
+	}
+
+	for _, candidate := range candidates {
+		candidatePath := filepath.Join(root, candidate)
+		_, err := os.Open(candidatePath)
+		if err != nil {
+			errorsSeen = append(errorsSeen, err.Error())
+		} else {
+			return &candidatePath, nil
+		}
+	}
+
+	return nil, fmt.Errorf("no lockfile found underneath `%s`. \n%s", root, strings.Join(errorsSeen, "\n"))
 }
